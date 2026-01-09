@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <style>
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #141e30, #243b55);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+        }
+
+        .card-glass {
+            width: 420px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(14px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+        }
+
+        .header {
+            text-align: center;
+            font-weight: bold;
+            background: linear-gradient(45deg, #f7971e, #ffd200);
+            color: #000;
+            padding: 12px;
+            border-radius: 14px;
+            margin-bottom: 20px;
+        }
+
+        .input-group-text {
+            background: #ffc107;
+            border: none;
+        }
+
+        .form-control,
+        .form-select {
+            border-radius: 12px;
+        }
+
+        .btn-calc {
+            background: linear-gradient(45deg, #36d1dc, #5b86e5);
+            border: none;
+            font-weight: bold;
+            border-radius: 14px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        #result {
+            animation: slideFade .6s ease-in-out;
+        }
+
+        @keyframes slideFade {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+
+    <script>
+        function CalculateClick() {
+
+            const age = document.getElementById("age").value;
+            const weight = parseInt(document.getElementById("txtWeight").value, 10);
+            const heightCm = parseFloat(document.getElementById("txtHeight").value);
+
+            if (age === "select" || isNaN(weight) || isNaN(heightCm) || weight <= 0 || heightCm <= 0) {
+                alert("Please enter valid age, weight and height.");
+                return;
+            }
+
+            const heightM = heightCm / 100;
+            const bmi = weight / (heightM * heightM);
+
+            document.getElementById("result").style.display = "block";
+            document.getElementById("txtBmi").value = bmi.toFixed(2);
+
+            let classification = "";
+
+            if (bmi < 18.5) classification = "Below Normal Weight";
+            else if (bmi < 25) classification = "Normal Weight";
+            else if (bmi < 30) classification = "Overweight";
+            else if (bmi < 35) classification = "Class I Obesity";
+            else if (bmi < 40) classification = "Class II Obesity";
+            else classification = "Class III Obesity";
+
+            document.getElementById("txtClassification").value = classification;
+        }
+    </script>
+</head>
+
+<body>
+
+    <div class="card-glass">
+
+        <div class="header">
+            <i class="bi bi-heart-pulse-fill"></i> BMI Calculator
+        </div>
+
+        <!-- Age -->
+        <label class="form-label">Age</label>
+        <select id="age" class="form-select mb-3">
+            <option value="select">Select Age</option>
+            <option>18-24</option>
+            <option>25-34</option>
+            <option>35-44</option>
+            <option>45-54</option>
+            <option>55-64</option>
+            <option>65+</option>
+        </select>
+
+        <!-- Weight -->
+        <label class="form-label">Weight (kg)</label>
+        <div class="input-group mb-3">
+            <span class="input-group-text"><i class="bi bi-speedometer2"></i></span>
+            <input type="number" id="txtWeight" class="form-control" min="1" placeholder="Enter weight">
+        </div>
+
+        <!-- Height -->
+        <label class="form-label">Height (cm)</label>
+        <div class="input-group mb-4">
+            <span class="input-group-text"><i class="bi bi-rulers"></i></span>
+            <input type="number" id="txtHeight" class="form-control" min="1" placeholder="Enter height">
+        </div>
+
+        <button class="btn btn-calc w-100 py-2 mb-3" onclick="CalculateClick()">
+            <i class="bi bi-calculator-fill"></i> Calculate BMI
+        </button>
+
+        <div id="result" style="display:none;">
+            <label>BMI</label>
+            <input type="text" id="txtBmi" class="form-control mb-2" readonly>
+
+            <label>Classification</label>
+            <input type="text" id="txtClassification" class="form-control" readonly>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
